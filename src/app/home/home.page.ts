@@ -5,6 +5,7 @@ import {
   NativeGeocoderResult,
   NativeGeocoderOptions,
 } from '@ionic-native/native-geocoder/ngx';
+import { AngularFirestore } from '@angular/fire/compat/firestore'; 
 
 @Component({
   selector: 'app-home',
@@ -19,7 +20,8 @@ export class HomePage {
 
   constructor(
     private geolocation: Geolocation,
-    private nativeGeocoder: NativeGeocoder
+    private nativeGeocoder: NativeGeocoder,
+    private firestore: AngularFirestore
   ) {}
 
   // geolocation options
@@ -38,6 +40,7 @@ export class HomePage {
         this.latitude = resp.coords.latitude;
         this.longitude = resp.coords.longitude;
         this.getAddress(this.latitude, this.longitude);
+        this.saveCoordinatesToFirestore(this.latitude, this.longitude); 
       })
       .catch((error) => {
         console.log('Error getting location', error);
@@ -74,5 +77,21 @@ export class HomePage {
       if (obj[val].length) data += obj[val] + ', ';
     }
     return address.slice(0, -2);
+  }
+  saveCoordinatesToFirestore(latitude: number, longitude: number) {
+    const timestamp = new Date().toISOString();
+    const data = {
+      latitude,
+      longitude,
+      timestamp
+    };
+
+    this.firestore.collection('locations').add(data)
+      .then(() => {
+        console.log('Coordinates saved to Firestore successfully');
+      })
+      .catch((error) => {
+        console.error('Error saving coordinates to Firestore: ', error);
+      });
   }
 }
