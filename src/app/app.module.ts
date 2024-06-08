@@ -9,7 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 // geolocation and native-geocoder
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
-import { environment } from 'src/environments/environment';
+import { environment } from '../environments/environment';
 
 import {AngularFireModule} from '@angular/fire/compat'
 import{AngularFireAuthModule} from'@angular/fire/compat/auth';
@@ -21,7 +21,7 @@ import { getDatabase, provideDatabase } from '@angular/fire/database'
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
-    AngularFireModule,AngularFireAuthModule,AngularFireModule.initializeApp(environment.firebaseConfig)],
+    AngularFireAuthModule,AngularFireModule.initializeApp(environment.firebaseConfig)],
   providers: [
     Geolocation,
     NativeGeocoder,
